@@ -51,6 +51,7 @@ function ReactNativeSdk({ queryParams, onTransakEventHandler, ...webviewProps })
       Alert.alert(error.message);
     }
   };
+
   const onNavigationStateChange = (navState) => {
     if (navState.url.includes('/googlepay')) {
       openTransak(navState.url.replace('isWebView', 'useAsExternalPayment'));

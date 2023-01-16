@@ -1,6 +1,7 @@
 import generateQueryString from 'query-string';
 
 const TRANSAK_URLS = {
+  LOCAL_DEVELOPMENT: 'https://localhost:5005/',
   STAGING: 'https://staging-global.transak.com/',
   PRODUCTION: 'https://global.transak.com/',
 };
@@ -23,4 +24,3 @@ function generateUrl(config) {
 }
 
 export { generateUrl };
-

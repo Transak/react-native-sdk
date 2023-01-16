@@ -78,4 +78,4 @@ This component accepts most of the [react-native-webview props](https://github.c
 
 ## License
 
-ISC Licensed. Copyright (c) 2022 Transak Inc.
+ISC Licensed. Copyright (c) 2023 Transak Inc.
