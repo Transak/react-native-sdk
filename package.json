@@ -1,6 +1,6 @@
 {
   "name": "@transak/react-native-sdk",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "description": "A React Native SDK for decentralised applications to onboard their global user base with fiat currency",
   "license": "ISC",
   "author": "Transak Inc. <support@transak.com> (https://transak.com/)",
