@@ -1,10 +1,10 @@
 {
   "name": "@transak/react-native-sdk",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "A React Native SDK for decentralised applications to onboard their global user base with fiat currency",
   "license": "ISC",
   "author": "Transak Inc. <support@transak.com> (https://transak.com/)",
-  "homepage": "https://docs.transak.com/docs/mobile-sdk-integration#react-native",
+  "homepage": "https://docs.transak.com/docs/react-native-integration#transak-react-native-sdk",
   "main": "index.js",
   "repository": {
     "type": "git",
