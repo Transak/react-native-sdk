@@ -75,6 +75,7 @@ function ReactNativeSdk({ queryParams, onTransakEventHandler, ...webviewProps })
       {...webviewProps}
       source={{ uri: transakUrl }}
       enableApplePay
+      allowsInlineMediaPlayback
       onNavigationStateChange={onNavigationStateChange}
     />
   );
