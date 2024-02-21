@@ -1,24 +1,80 @@
 {
   "name": "@transak/react-native-sdk",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "A React Native SDK for decentralised applications to onboard their global user base with fiat currency",
+  "type": "module",
+  "types": "lib/index.d.ts",
+  "main": "lib/index.cjs",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.js"
+      },
+      "require": {
+        "types": "./lib/index.d.cts",
+        "default": "./lib/index.cjs"
+      }
+    }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@8.15.3+sha256.fc4a49bd609550a41e14d20efbce802a4b892aa4cac877322de2f0924f122991",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "eslint": "eslint . --ext .ts,.tsx",
+    "eslint:fix": "pnpm eslint --fix",
+    "build": "tsc && tsup",
+    "prepack": "pnpm build",
+    "packDev": "pnpm pack"
+  },
+  "author": "Transak",
   "license": "ISC",
-  "author": "Transak Inc. <support@transak.com> (https://transak.com/)",
   "homepage": "https://docs.transak.com/docs/react-native-integration#transak-react-native-sdk",
-  "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Transak/transak-react-native-sdk"
+    "url": "https://github.com/Transak/react-native-sdk"
   },
   "peerDependencies": {
-    "@react-native-community/netinfo": "^9.1.0",
-    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "@react-native-community/netinfo": "*",
+    "@types/react": "*",
+    "react": "*",
     "react-native": "*",
-    "react-native-inappbrowser-reborn": "^3.6.3",
+    "react-native-inappbrowser-reborn": "*",
     "react-native-webview": "*"
   },
   "dependencies": {
-    "pusher-js": "~7.0.6",
-    "query-string": "~7.1.1"
-  }
+    "pako": "^2.1.0",
+    "pusher-js": "^8.3.0",
+    "query-string": "^8.2.0"
+  },
+  "devDependencies": {
+    "@types/pako": "^2.0.3",
+    "@types/react": "^18.2.57",
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-no-relative-import-paths": "^1.5.3",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-promise": "^6.1.1",
+    "prettier": "^3.2.5",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3"
+  },
+  "keywords": [
+    "crypto",
+    "cryptocurrency",
+    "fiat",
+    "on",
+    "off",
+    "ramp",
+    "sdk",
+    "react-native"
+  ]
 }
