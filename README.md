@@ -71,7 +71,7 @@ function TransakReactNativeSdkIntegration() {
 
 | Prop                  | Description                                                                                                   |
 |:----------------------|:--------------------------------------------------------------------------------------------------------------|
-| queryParams           | Refer [here](https://docs.transak.com/docs/query-parameters) for the full list of query params                |
+| queryParams           | Refer [here](https://docs.transak.com/docs/sdk) for the full list of query params                             |
 | onTransakEventHandler | Accepts callback function to listen to order related [events](https://docs.transak.com/docs/websocket-events) |
 
 This component accepts most of the [react-native-webview props](https://github.com/react-native-webview/react-native-webview/blob/HEAD/docs/Reference.md), except the following: source, injectJavaScript, sharedCookiesEnabled, injectedJavaScript, injectedJavaScriptBeforeContentLoaded
