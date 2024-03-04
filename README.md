@@ -5,61 +5,52 @@ A React Native SDK for decentralised applications to onboard their global user b
 ## Installation
 
 ```sh
-# Using yarn
-yarn add @transak/react-native-sdk
-
-# Using npm
-npm install @transak/react-native-sdk
+npm i @transak/react-native-sdk
 ```
 
 Install these required peer dependencies to facilitate auto-linking.
 
 ```sh
-# Using yarn
-yarn add react-native-webview
-yarn add react-native-inappbrowser-reborn
-yarn add @react-native-community/netinfo
-
-# Using npm
-npm install react-native-webview
-npm install react-native-inappbrowser-reborn
-npm install @react-native-community/netinfo
+npm i react-native-webview
+npm i react-native-inappbrowser-reborn
+npm i @react-native-community/netinfo
 ```
 
 ## Example usage
 
-```js
-import TransakWebView from '@transak/react-native-sdk';
+```tsx
+import { TransakWebView, Environments, Events, TransakConfig, EventTypes, Order } from '@transak/react-native-sdk';
 
-function TransakReactNativeSdkIntegration() {
-  const transakEventHandler = (event, data) => {
+function TransakWebViewIntegration() {
+  const transakConfig: TransakConfig = {
+    apiKey: '<your-api-key>', // (Required)
+    environment: Environments.STAGING/Environments.PRODUCTION, // (Required)
+    // .....
+    // For the full list of query params refer Props section below
+  };
+  const onTransakEventHandler = (event: EventTypes, data: Order) => {
     switch(event) {
-      case 'ORDER_PROCESSING':
-        console.log(data);
+      case Events.ORDER_CREATED:
+        console.log(event, data);
         break;
 
-      case 'ORDER_COMPLETED':
-        console.log(data);
+      case Events.ORDER_PROCESSING:
+        console.log(event, data);
+        break;
+
+      case Events.ORDER_COMPLETED:
+        console.log(event, data);
         break;
 
       default:
-        console.log(data);
+        console.log(event, data);
     }
   };
 
   return (
     <TransakWebView
-      queryParams={{
-        apiKey: '<your-api-key>',
-        environment: '<environment: STAGING/PRODUCTION>',
-        // .....
-        // For the full list of query params refer Props section below
-      }}
-      onTransakEventHandler={transakEventHandler}
-
-      style={}          // react-native-webview prop
-      onLoadStart={}    // react-native-webview prop
-      onLoadEnd={}      // react-native-webview prop
+      transakConfig={transakConfig}
+      onTransakEvent={onTransakEventHandler}
       // .....
       // For the full list of react-native-webview props refer Props section below
     />
@@ -69,12 +60,12 @@ function TransakReactNativeSdkIntegration() {
 
 ### Props
 
-| Prop                  | Description                                                                                                   |
-|:----------------------|:--------------------------------------------------------------------------------------------------------------|
-| queryParams           | Refer [here](https://docs.transak.com/docs/sdk) for the full list of query params                             |
-| onTransakEventHandler | Accepts callback function to listen to order related [events](https://docs.transak.com/docs/websocket-events) |
-
-This component accepts most of the [react-native-webview props](https://github.com/react-native-webview/react-native-webview/blob/HEAD/docs/Reference.md), except the following: source, injectJavaScript, sharedCookiesEnabled, injectedJavaScript, injectedJavaScriptBeforeContentLoaded
+| Prop           | Description                                                                                           |
+|:---------------|:------------------------------------------------------------------------------------------------------|
+| transakConfig  | Refer [here](https://docs.transak.com/docs/sdk) for the full list of customisation options            |
+| onTransakEvent | Callback function to listen to order related [events](https://docs.transak.com/docs/websocket-events) |
+<br />
+This component accepts most of the [react-native-webview props](https://github.com/react-native-webview/react-native-webview/blob/HEAD/docs/Reference.md), except the following: sharedCookiesEnabled, injectedJavaScript, injectedJavaScriptBeforeContentLoaded
 
 ## License
 
