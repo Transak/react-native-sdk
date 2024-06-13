@@ -1,6 +1,6 @@
 {
   "name": "@transak/react-native-sdk",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A React Native SDK for decentralised applications to onboard their global user base with fiat currency",
   "type": "module",
   "types": "lib/index.d.ts",
@@ -20,7 +20,7 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "packageManager": "pnpm@8.15.3+sha256.fc4a49bd609550a41e14d20efbce802a4b892aa4cac877322de2f0924f122991",
+  "packageManager": "pnpm@9.3.0+sha256.e1f9e8d1a16607a46dd3c158b5f7a7dc7945501d1c6222d454d63d033d1d918f",
   "files": [
     "lib/**/*"
   ],
