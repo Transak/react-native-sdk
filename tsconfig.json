@@ -15,11 +15,11 @@
     "strict": true,
 
     /* Path aliases */
-    "baseUrl": "./src",
     "paths": {
-      "Constants/*": ["Constants/*"],
-      "Types/*": ["Types/*"],
-      "Utils/*": ["Utils/*"]
+      "Constants/*": ["./src/Constants/*"],
+      "Types/*": ["./src/Types/*"],
+      "Utils/*": ["./src/Utils/*"],
+      "package.json": ["./package.json"]
     }
   },
   "include": [
