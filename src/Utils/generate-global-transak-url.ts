@@ -5,7 +5,7 @@ import { TransakConfig } from 'Types/sdk-config.types';
 import { Environments } from 'Constants/environments';
 import packageJson from 'package.json';
 
-export function generateURL(configData: TransakConfig) {
+export function generateGlobalTransakUrl(configData: TransakConfig) {
   const { name: sdkName, version: sdkVersion } = packageJson;
   const { environment = Environments.STAGING } = configData;
   const queryParams = { sdkName, sdkVersion };
