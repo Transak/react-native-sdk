@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, forwardRef } from 'react';
 import { Alert, Linking } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
-import { generateURL } from 'Utils/generate-url';
+import { generateGlobalTransakUrl } from 'Utils/generate-global-transak-url';
 import { eventListener } from 'Utils/event-listener';
 import { TransakWebViewInputs } from 'Types/sdk-config.types';
 
-function TransakWebView({ transakConfig, onTransakEvent, ...webviewProps }: TransakWebViewInputs) {
-  const transakUrl = generateURL(transakConfig);
+const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfig, onTransakEvent, ...webviewProps }, ref) => {
+  const transakUrl = generateGlobalTransakUrl(transakConfig);
   const currentWebviewProps = { ...webviewProps };
 
   delete currentWebviewProps.sharedCookiesEnabled;
@@ -49,7 +49,7 @@ function TransakWebView({ transakConfig, onTransakEvent, ...webviewProps }: Tran
     }
   };
 
-  const onMessageHandler = async (event: WebViewMessageEvent) => {
+  const onMessageHandler = (event: WebViewMessageEvent) => {
     if (webviewProps.onMessage) {
       webviewProps.onMessage(event);
     }
@@ -57,7 +57,8 @@ function TransakWebView({ transakConfig, onTransakEvent, ...webviewProps }: Tran
     const url = event.nativeEvent.data;
 
     if (url.includes('/googlepay')) {
-      await openTransak(url.replace('isWebView', 'useAsExternalPayment'));
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      openTransak(url.replace('isWebView', 'useAsExternalPayment'));
     }
   };
 
@@ -71,6 +72,7 @@ function TransakWebView({ transakConfig, onTransakEvent, ...webviewProps }: Tran
 
   return (
     <WebView
+      ref={ref}
       {...currentWebviewProps}
       originWhitelist={['*']}
       source={{ uri: transakUrl }}
@@ -79,6 +81,6 @@ function TransakWebView({ transakConfig, onTransakEvent, ...webviewProps }: Tran
       onMessage={onMessageHandler}
     />
   );
-}
+});
 
 export { TransakWebView };
