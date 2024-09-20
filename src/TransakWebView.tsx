@@ -1,4 +1,4 @@
-import { useEffect, forwardRef } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import { Alert, Linking } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
@@ -7,6 +7,7 @@ import { eventListener } from 'Utils/event-listener';
 import { TransakWebViewInputs } from 'Types/sdk-config.types';
 
 const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfig, onTransakEvent, ...webviewProps }, ref) => {
+  const [isGooglePayUrlOpen, setIsGooglePayUrlOpen] = useState(false);
   const transakUrl = generateGlobalTransakUrl(transakConfig);
   const currentWebviewProps = { ...webviewProps };
 
@@ -15,7 +16,7 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
   delete currentWebviewProps.injectedJavaScriptBeforeContentLoaded;
   delete currentWebviewProps.onMessage;
 
-  const openTransak = async (url: string) => {
+  const openGooglePayUrl = async (url: string) => {
     try {
       if (await InAppBrowser.isAvailable()) {
         await InAppBrowser.open(url, {
@@ -56,9 +57,10 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
 
     const url = event.nativeEvent.data;
 
-    if (url.includes('/googlepay')) {
+    if (!isGooglePayUrlOpen && url.includes('/googlepay')) {
+      setIsGooglePayUrlOpen(true);
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      openTransak(url.replace('isWebView', 'useAsExternalPayment'));
+      openGooglePayUrl(url.replace('isWebView', 'useAsExternalPayment'));
     }
   };
 
