@@ -53,7 +53,6 @@ type TokenData = {
 
 export type QueryParams = {
   apiKey: string;
-  partnerOrderId: string;
   exchangeScreenTitle?: string;
   productsAvailed?: string | string[];
   defaultFiatCurrency?: string;
@@ -78,6 +77,7 @@ export type QueryParams = {
   themeColor?: string;
   hideMenu?: boolean;
   redirectURL?: string;
+  partnerOrderId?: string;
   partnerCustomerId?: string;
   defaultFiatAmount?: number;
   fiatAmount?: number;
@@ -104,4 +104,5 @@ export type QueryParams = {
   cryptoCurrencyData?: CryptoCurrencyData[];
   contractId?: string;
   tokenData?: TokenData[];
+  isTransakStreamOffRamp?: boolean;
 };
