@@ -14,6 +14,7 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
   delete currentWebviewProps.injectedJavaScript;
   delete currentWebviewProps.injectedJavaScriptBeforeContentLoaded;
   delete currentWebviewProps.onMessage;
+  delete currentWebviewProps.mediaPlaybackRequiresUserAction;
 
   const openGooglePayUrl = async (url: string) => {
     try {
@@ -78,6 +79,7 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
       source={{ uri: transakUrl }}
       enableApplePay
       allowsInlineMediaPlayback
+      mediaPlaybackRequiresUserAction={false}
       onMessage={onMessageHandler}
     />
   );
