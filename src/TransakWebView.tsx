@@ -50,6 +50,40 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
     }
   };
 
+  const openOpenBankingUrl = async (url: string) => {
+    try {
+      if (await InAppBrowser.isAvailable()) {
+        await InAppBrowser.open(url, {
+          // Android Properties
+          showTitle: false,
+          toolbarColor: transakConfig.themeColor ? `#${transakConfig.themeColor}` : '#2575fc',
+          secondaryToolbarColor: '#ffffff',
+          enableUrlBarHiding: true,
+          enableDefaultShare: false,
+          forceCloseOnRedirection: false,
+          hasBackButton: false,
+          showInRecents: false,
+          // iOS Properties
+          dismissButtonStyle: 'done',
+          preferredBarTintColor: transakConfig.themeColor ? `#${transakConfig.themeColor}` : '#2575fc',
+          preferredControlTintColor: '#ffffff',
+          readerMode: false,
+          animated: true,
+          modalPresentationStyle: 'fullScreen',
+          modalTransitionStyle: 'coverVertical',
+          modalEnabled: true,
+          enableBarCollapsing: false,
+        });
+      } else {
+        await Linking.openURL(url);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+    }
+  };
+
   const onMessageHandler = (event: WebViewMessageEvent) => {
     if (webviewProps.onMessage) {
       webviewProps.onMessage(event);
@@ -60,6 +94,11 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
     if (url.includes('/googlepay')) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       openGooglePayUrl(url.replace('isWebView', 'useAsExternalPayment'));
+    }
+
+    if (url.includes('/open-banking')) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      openOpenBankingUrl(url.replace('isWebView', 'useAsExternalPayment'));
     }
   };
 
