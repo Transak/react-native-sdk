@@ -16,41 +16,7 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
   delete currentWebviewProps.onMessage;
   delete currentWebviewProps.mediaPlaybackRequiresUserAction;
 
-  const openGooglePayUrl = async (url: string) => {
-    try {
-      if (await InAppBrowser.isAvailable()) {
-        await InAppBrowser.open(url, {
-          // Android Properties
-          showTitle: false,
-          toolbarColor: transakConfig.themeColor ? `#${transakConfig.themeColor}` : '#2575fc',
-          secondaryToolbarColor: '#ffffff',
-          enableUrlBarHiding: true,
-          enableDefaultShare: false,
-          forceCloseOnRedirection: false,
-          hasBackButton: false,
-          showInRecents: false,
-          // iOS Properties
-          dismissButtonStyle: 'done',
-          preferredBarTintColor: transakConfig.themeColor ? `#${transakConfig.themeColor}` : '#2575fc',
-          preferredControlTintColor: '#ffffff',
-          readerMode: false,
-          animated: true,
-          modalPresentationStyle: 'fullScreen',
-          modalTransitionStyle: 'coverVertical',
-          modalEnabled: true,
-          enableBarCollapsing: false,
-        });
-      } else {
-        await Linking.openURL(url);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert(error.message);
-      }
-    }
-  };
-
-  const openOpenBankingUrl = async (url: string) => {
+  const openInAppBrowser = async (url: string) => {
     try {
       if (await InAppBrowser.isAvailable()) {
         await InAppBrowser.open(url, {
@@ -91,14 +57,9 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
 
     const url = event.nativeEvent.data;
 
-    if (url.includes('/googlepay')) {
+    if (url.includes('/googlepay') || url.includes('/open-banking')) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      openGooglePayUrl(url.replace('isWebView', 'useAsExternalPayment'));
-    }
-
-    if (url.includes('/open-banking')) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      openOpenBankingUrl(url.replace('isWebView', 'useAsExternalPayment'));
+      openInAppBrowser(url.replace('isWebView', 'useAsExternalPayment'));
     }
   };
 
