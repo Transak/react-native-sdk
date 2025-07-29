@@ -1,5 +1,5 @@
 import { useEffect, forwardRef } from 'react';
-import { Alert, Linking } from 'react-native';
+import { Alert, Linking, Text, View } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import { generateGlobalTransakUrl } from 'Utils/generate-global-transak-url';
@@ -57,9 +57,14 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
 
     const url = event.nativeEvent.data;
 
-    if (url.includes('/googlepay') || url.includes('/open-banking')) {
+    if (url.includes('/googlepay')) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       openInAppBrowser(url.replace('isWebView', 'useAsExternalPayment'));
+    }
+
+    if (url.startsWith('https://secure.plaid.com')) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      openInAppBrowser(url);
     }
   };
 
