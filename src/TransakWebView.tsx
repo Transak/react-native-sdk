@@ -1,5 +1,5 @@
 import { useEffect, forwardRef } from 'react';
-import { Alert, Linking, Text, View } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import { generateGlobalTransakUrl } from 'Utils/generate-global-transak-url';
