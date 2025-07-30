@@ -16,7 +16,7 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
   delete currentWebviewProps.onMessage;
   delete currentWebviewProps.mediaPlaybackRequiresUserAction;
 
-  const openGooglePayUrl = async (url: string) => {
+  const openInAppBrowser = async (url: string) => {
     try {
       if (await InAppBrowser.isAvailable()) {
         await InAppBrowser.open(url, {
@@ -59,7 +59,12 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
 
     if (url.includes('/googlepay')) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      openGooglePayUrl(url.replace('isWebView', 'useAsExternalPayment'));
+      openInAppBrowser(url.replace('isWebView', 'useAsExternalPayment'));
+    }
+
+    if (url.startsWith('https://secure.plaid.com')) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      openInAppBrowser(url);
     }
   };
 
