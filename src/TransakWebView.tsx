@@ -4,10 +4,12 @@ import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import { generateGlobalTransakUrl } from 'Utils/generate-global-transak-url';
 import { eventListener } from 'Utils/event-listener';
+import { validateURL } from 'Utils/validate-url';
 import { TransakWebViewInputs } from 'Types/sdk-config.types';
 
 const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfig, onTransakEvent, ...webviewProps }, ref) => {
   const transakUrl = generateGlobalTransakUrl(transakConfig);
+  const referrer = validateURL(transakConfig.referrer);
   const currentWebviewProps = { ...webviewProps };
 
   delete currentWebviewProps.sharedCookiesEnabled;
@@ -29,6 +31,7 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
           forceCloseOnRedirection: false,
           hasBackButton: false,
           showInRecents: false,
+          includeReferrer: true,
           // iOS Properties
           dismissButtonStyle: 'done',
           preferredBarTintColor: transakConfig.themeColor ? `#${transakConfig.themeColor}` : '#2575fc',
@@ -69,7 +72,7 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
   };
 
   useEffect(() => {
-    const { unbindListener } = eventListener(transakConfig, onTransakEvent);
+    const { unbindListener } = eventListener(onTransakEvent, transakConfig.apiKey);
 
     return () => {
       unbindListener();
@@ -81,7 +84,10 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
       ref={ref}
       {...currentWebviewProps}
       originWhitelist={['*']}
-      source={{ uri: transakUrl }}
+      source={{
+        uri: transakUrl,
+        headers: { Referrer: referrer },
+      }}
       enableApplePay
       allowsInlineMediaPlayback
       mediaPlaybackRequiresUserAction={false}
