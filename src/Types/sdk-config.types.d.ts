@@ -6,6 +6,7 @@ import { EventTypes } from 'Types/events.types';
 
 export type TransakConfig = {
   environment: Environments.STAGING | Environments.PRODUCTION;
+  referrer: string;
 } & QueryParams;
 
 export type OnTransakEvent = (event: EventTypes, data: Order) => void;
