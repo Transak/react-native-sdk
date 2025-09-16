@@ -1,3 +1,7 @@
 import { Events } from 'Constants/events';
 
-export type EventTypes = keyof typeof Events;
+export type EventIds = keyof typeof Events;
+export type EventTypes = {
+  event_id: Events;
+  data: unknown;
+};
