@@ -1,14 +1,13 @@
-import { Environments } from 'Constants/environments';
-import { QueryParams } from 'Types/query-params.types';
 import { WebViewProps } from 'react-native-webview';
-import { Order } from 'Types/order.types';
-import { EventTypes } from 'Types/events.types';
+import { Events } from 'Constants/events';
 
 export type TransakConfig = {
-  environment: Environments.STAGING | Environments.PRODUCTION;
-} & QueryParams;
+  widgetUrl: string;
+  referrer: string;
+  themeColor?: string;
+};
 
-export type OnTransakEvent = (event: EventTypes, data: Order) => void;
+export type OnTransakEvent = (event: Events, data: unknown) => void;
 
 export type TransakWebViewInputs = {
   transakConfig: TransakConfig;

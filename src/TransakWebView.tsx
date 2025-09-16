@@ -1,13 +1,16 @@
-import { useEffect, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { Alert, Linking } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import { generateGlobalTransakUrl } from 'Utils/generate-global-transak-url';
-import { eventListener } from 'Utils/event-listener';
+import { validateURL } from 'Utils/validate-url';
+import { Events } from 'Constants/events';
 import { TransakWebViewInputs } from 'Types/sdk-config.types';
+import { EventTypes } from 'Types/events.types';
 
 const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfig, onTransakEvent, ...webviewProps }, ref) => {
   const transakUrl = generateGlobalTransakUrl(transakConfig);
+  const referrer = validateURL(transakConfig.referrer);
   const currentWebviewProps = { ...webviewProps };
 
   delete currentWebviewProps.sharedCookiesEnabled;
@@ -29,6 +32,7 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
           forceCloseOnRedirection: false,
           hasBackButton: false,
           showInRecents: false,
+          includeReferrer: true,
           // iOS Properties
           dismissButtonStyle: 'done',
           preferredBarTintColor: transakConfig.themeColor ? `#${transakConfig.themeColor}` : '#2575fc',
@@ -55,33 +59,44 @@ const TransakWebView = forwardRef<WebView, TransakWebViewInputs>(({ transakConfi
       webviewProps.onMessage(event);
     }
 
-    const url = event.nativeEvent.data;
+    const { data } = event.nativeEvent || {};
 
-    if (url.includes('/googlepay')) {
+    if (data?.includes('/googlepay')) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      openInAppBrowser(url.replace('isWebView', 'useAsExternalPayment'));
+      openInAppBrowser(data.replace('isWebView', 'useAsExternalPayment'));
+      return;
     }
 
-    if (url.startsWith('https://secure.plaid.com')) {
+    if (data?.startsWith('https://secure.plaid.com')) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      openInAppBrowser(url);
+      openInAppBrowser(data);
+      return;
+    }
+
+    if (onTransakEvent) {
+      try {
+        const parsedData = JSON.parse(data) as EventTypes;
+
+        if (parsedData.event_id && Object.values(Events).includes(parsedData.event_id)) {
+          const { event_id: eventId, data: eventData } = parsedData || {};
+
+          onTransakEvent(eventId, eventData);
+        }
+      } catch (error) {
+        throw new Error('Invalid transak event');
+      }
     }
   };
-
-  useEffect(() => {
-    const { unbindListener } = eventListener(transakConfig, onTransakEvent);
-
-    return () => {
-      unbindListener();
-    };
-  }, []);
 
   return (
     <WebView
       ref={ref}
       {...currentWebviewProps}
       originWhitelist={['*']}
-      source={{ uri: transakUrl }}
+      source={{
+        uri: transakUrl,
+        headers: { Referrer: referrer },
+      }}
       enableApplePay
       allowsInlineMediaPlayback
       mediaPlaybackRequiresUserAction={false}
